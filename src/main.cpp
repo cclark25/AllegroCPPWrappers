@@ -1,8 +1,9 @@
 #include <iostream>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h> 
-#include "Bitmap.cpp"
-#include "Color.cpp"
+#include "./Bitmap/Bitmap.cpp"
+#include "./Color/Color.cpp"
+
 
 int main(int argc, char **argv) {
     al_init();

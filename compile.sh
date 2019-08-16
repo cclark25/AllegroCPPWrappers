@@ -1,1 +1,1 @@
-g++ *.cpp -lallegro -lallegro_image
+g++ ./src/main.cpp -lallegro -lallegro_image 

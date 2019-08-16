@@ -1,5 +1,6 @@
 #include <allegro5/allegro.h>
-
+#ifndef ALLEGRO_WRAPPERS_COLOR_DEF
+#define ALLEGRO_WRAPPERS_COLOR_DEF
 namespace AllegroWrappers {
 
     class Color : public ALLEGRO_COLOR {
@@ -34,3 +35,5 @@ namespace AllegroWrappers {
     };
 
 }
+
+#endif
