@@ -1,5 +1,9 @@
+#ifndef ALLEGRO_WRAPPERS_BITMAP_DEF
+#define ALLEGRO_WRAPPERS_BITMAP_DEF
+
 #include <allegro5/allegro.h>
 #include <string>
+#include "../Color/Color.cpp"
 
 namespace AllegroWrappers {
 	class Bitmap {
@@ -78,8 +82,8 @@ namespace AllegroWrappers {
 			//     return al_get_bitmap_samples(data->bitmap);
 			// }
 
-			ALLEGRO_COLOR get_pixel(int x, int y) { 
-				return al_get_pixel(data->bitmap, x, y);
+			Color get_pixel(int x, int y) { 
+				return Color(al_get_pixel(data->bitmap, x, y));
 			}
 
 			int is_bitmap_locked() { 
@@ -160,6 +164,77 @@ namespace AllegroWrappers {
 
 
 
+			// Drawing Operations
+
+			void clear_to_color(Color color){
+				al_set_target_bitmap(this->data->bitmap);
+				al_clear_to_color(color);
+			}
+
+			void al_clear_depth_buffer(float z){
+				al_set_target_bitmap(this->data->bitmap);
+				al_clear_depth_buffer(z);
+			}
+
+			void draw_bitmap(Bitmap bitmap, float destination_x, float destination_y, int flags){
+				al_set_target_bitmap(this->data->bitmap);
+				al_draw_bitmap(bitmap.data->bitmap, destination_x, destination_y, flags);
+			}
+
+			void draw_tinted_bitmap(Bitmap bitmap, Color tint, float destination_x, float destination_y, int flags){
+				al_set_target_bitmap(this->data->bitmap);
+				al_draw_tinted_bitmap(bitmap.data->bitmap, tint, destination_x, destination_y, flags);
+			}
+
+			void draw_bitmap_region(Bitmap bitmap, float source_x, float source_y, float source_width, float source_height, float destination_x, float destination_y, int flags){
+				al_set_target_bitmap(this->data->bitmap);
+				al_draw_bitmap_region(bitmap.data->bitmap,source_x, source_y, source_width, source_height, destination_x, destination_y, flags);
+			}
+
+			void draw_tinted_bitmap_region(Bitmap bitmap, Color tint, float source_x, float source_y, float source_w, float source_h, float destination_x, float destination_y, int flags){
+				al_set_target_bitmap(this->data->bitmap);
+				al_draw_tinted_bitmap_region(bitmap.data->bitmap, tint, source_x, source_y, source_w, source_h, destination_x, destination_y, flags);
+			}
+
+			// void draw_pixel(float x, float y, Color color) // I'm not bothering to implement this because it would be very innefficient. See also bitmap locks from the allegro documentation.
+			
+			void draw_rotated_bitmap(Bitmap bitmap, float center_x, float center_y, float destination_x, float destination_y, float angle_radians, int flags){
+				al_set_target_bitmap(this->data->bitmap);
+				al_draw_rotated_bitmap(bitmap.data->bitmap, center_x, center_y, destination_x, destination_y, angle_radians, flags);
+			}
+
+			void draw_tinted_rotated_bitmap(Bitmap bitmap, Color tint, float center_x, float center_y, float destination_x, float destination_y, float angle, int flags){
+				al_set_target_bitmap(this->data->bitmap);
+				al_draw_tinted_rotated_bitmap(bitmap.data->bitmap, tint, center_x, center_y, destination_x, destination_y, angle, flags);
+			}
+
+			void draw_scaled_rotated_bitmap(Bitmap bitmap, float center_x, float center_y, float destination_x, float destination_y, float xscale, float yscale, float angle, int flags){
+				al_set_target_bitmap(this->data->bitmap);
+				al_draw_scaled_rotated_bitmap(bitmap.data->bitmap, center_x, center_y, destination_x, destination_y, xscale, yscale, angle, flags);
+			}
+
+			void draw_tinted_scaled_rotated_bitmap(Bitmap bitmap, Color tint, float center_x, float center_y, float destination_x, float destination_y, float xscale, float yscale, float angle, int flags){
+				al_set_target_bitmap(this->data->bitmap);
+				al_draw_tinted_scaled_rotated_bitmap(bitmap.data->bitmap, tint, center_x, center_y, destination_x, destination_y, xscale, yscale, angle, flags);
+			}
+
+			void draw_tinted_scaled_rotated_bitmap_region(Bitmap bitmap, float source_x, float source_y, float source_w, float source_h, Color tint, float center_x, float center_y, float destination_x, float destination_y, float xscale, float yscale, float angle, int flags){
+				al_set_target_bitmap(this->data->bitmap);
+				al_draw_tinted_scaled_rotated_bitmap_region(bitmap.data->bitmap, source_x, source_y, source_w, source_h, tint, center_x, center_y, destination_x, destination_y, xscale, yscale, angle, flags);
+			}
+
+			void draw_scaled_bitmap(Bitmap bitmap, float source_x, float source_y, float source_width, float source_height, float destination_x, float destination_y, float destination_width, float destination_height, int flags){
+				al_set_target_bitmap(this->data->bitmap);
+				al_draw_scaled_bitmap(bitmap.data->bitmap, source_x, source_y, source_width, source_height, destination_x, destination_y, destination_width, destination_height, flags);
+			}
+
+			void draw_tinted_scaled_bitmap(Bitmap bitmap, Color tint, float source_x, float source_y, float source_w, float source_h, float destination_x, float destination_y, float destination_w, float destination_h, int flags){
+				al_set_target_bitmap(this->data->bitmap);
+				al_draw_tinted_scaled_bitmap(bitmap.data->bitmap, tint, source_x, source_y, source_w, source_h, destination_x, destination_y, destination_w, destination_h, flags);
+			}
+
+
+
 
 			// Destructor
 			~Bitmap(){
@@ -172,3 +247,5 @@ namespace AllegroWrappers {
 	};
 
 }
+
+#endif

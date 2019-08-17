@@ -5,7 +5,7 @@ namespace AllegroWrappers {
 
 	class Color : public ALLEGRO_COLOR {
 		public:
-			Color(ALLEGRO_COLOR &base_color) : ALLEGRO_COLOR(base_color){};
+			Color(ALLEGRO_COLOR base_color) : ALLEGRO_COLOR(base_color){};
 
 			Color(unsigned char red, unsigned char green, unsigned char blue) : ALLEGRO_COLOR(al_map_rgb(red, green, blue)){};
 			Color(unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha) : ALLEGRO_COLOR(al_map_rgba(red, green, blue, alpha)){};

@@ -3,14 +3,14 @@
 #include <allegro5/allegro_image.h> 
 #include "./Bitmap/Bitmap.cpp"
 #include "./Color/Color.cpp"
-
+#include <unistd.h>
 
 int main(int argc, char **argv) {
 	al_init();
 	al_init_image_addon();
 	ALLEGRO_PATH *path = al_get_standard_path(ALLEGRO_RESOURCES_PATH);
 	ALLEGRO_DISPLAY *window = al_create_display(1080, 720);
-	
+	AllegroWrappers::Bitmap backbuffer(1080, 720);
 
 
 	AllegroWrappers::Bitmap image("test.png");
@@ -18,33 +18,29 @@ int main(int argc, char **argv) {
 	if(!(image.data->bitmap)) {
 	  std::cerr << al_path_cstr(path, '/');
 	  return 0;
-   }
-   
-	al_set_target_bitmap(al_get_backbuffer(window));
-	al_clear_to_color(al_map_rgb(0,255, 0));
-	al_draw_bitmap_region(image.data->bitmap, 0, 0, image.get_bitmap_width()/2.0, image.get_bitmap_height(), 0, 0, 0);
-	//al_draw_rotated_bitmap(image, 0, 0, 0, 0, 3.14, 0);
-	std::cout << bool(al_get_new_bitmap_flags() & ALLEGRO_CONVERT_BITMAP) << "\n";
+   	}
+	al_set_target_backbuffer(window);
 
-	al_flip_display();
+	int frame = 0;
+	double time = 0;
+	float rot_per_sec = (3.1415/6.0);
+	double frame_per_sec = 10;
+	while(true){
+			std::cout << time << std::endl;
+		backbuffer.clear_to_color(AllegroWrappers::Color((unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0));
+		backbuffer.draw_scaled_rotated_bitmap(image, image.get_bitmap_width(), image.get_bitmap_height(), 540, 360, (int(al_get_time())%int(frame_per_sec) + 1)/frame_per_sec, (int(al_get_time())%int(frame_per_sec) + 1)/frame_per_sec, rot_per_sec*al_get_time(), 0);
+		al_set_target_backbuffer(window);
+		al_clear_to_color(al_map_rgb(0,0,0));
 
-	unsigned char r = 1;
-	unsigned char g = 2;
-	unsigned char b = 3;
-	unsigned char a = 4;
-	AllegroWrappers::Color test_color(r,g,b,a);
-	
-	al_unmap_rgb(test_color, &r, &g, &b);
+		al_draw_bitmap(backbuffer.data->bitmap, 0, 0, 0);
 
-	std::cout << "r: " << (int)test_color.r_char() << std::endl; 
-	std::cout << "g: " << (int)test_color.g_char() << std::endl; 
-	std::cout << "b: " << (int)test_color.b_char() << std::endl; 
-	std::cout << "a: " << (int)test_color.a_char() << std::endl; 
-	float z = 0;
-	std::cout << "float size: " << (int)sizeof z << std::endl; 
+		al_flip_display();
 
-
-	sleep(10);
+		frame++;
+		int x = 1000000.0/frame_per_sec;
+		usleep(x);
+		time += 1.0/frame_per_sec;
+	}
 
 	al_destroy_display(window);
 }
