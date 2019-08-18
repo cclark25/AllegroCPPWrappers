@@ -7,6 +7,7 @@
 
 namespace AllegroWrappers {
 	class Bitmap {
+		protected:
 		public:
 			struct foreign_data {
 				ALLEGRO_BITMAP* bitmap;
