@@ -14,11 +14,15 @@ int main(int argc, char **argv) {
 	AllegroWrappers::Bitmap backbuffer(1080, 720);
 	
 	AllegroWrappers::Display test_display(1080, 720);
+	test_display.set_window_title("Test Window!");
 
 	AllegroWrappers::Bitmap image("test.png");
+	test_display.set_display_icon(image);
 
 	test_display.get_backbuffer().draw_bitmap(image, 0, 0, 0);
 	test_display.flip_display();
+
+	
 
 	usleep(5000000);
 }
