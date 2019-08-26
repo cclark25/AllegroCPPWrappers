@@ -23,7 +23,7 @@ namespace AllegroWrappers {
                 data->reference_count = 1;
             }
 
-            EventSource(EventSource &source){
+            EventSource(EventSource const&source){
                 data = source.data;
                 data->reference_count++;
             }

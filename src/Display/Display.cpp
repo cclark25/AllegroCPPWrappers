@@ -137,7 +137,14 @@ namespace AllegroWrappers {
 			// 	al_set_display_icons(data->display, icons.size(), )
    			// }
 
+			// Static Functions
+			static int get_new_display_refresh_rate(){
+				return al_get_new_display_refresh_rate();
+			}
 
+			static void set_new_display_refresh_rate(int rate){
+				al_set_new_display_refresh_rate(rate);
+			}
 
 
 			// Destructor

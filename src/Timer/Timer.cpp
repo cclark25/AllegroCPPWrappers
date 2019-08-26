@@ -14,9 +14,11 @@ namespace AllegroWrappers {
 			} *data = nullptr;
 
 			Timer(double speed_seconds){
+				ALLEGRO_TIMER *t = al_create_timer(speed_seconds);
+				EventSource s(al_get_timer_event_source(t));
 				data = new foreign_data {
-					al_create_timer(speed_seconds), 
-					EventSource(al_get_timer_event_source(data->timer)), 
+					t, 
+					s, 
 					1
 				};
 			}
