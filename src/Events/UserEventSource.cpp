@@ -17,7 +17,7 @@ namespace AllegroWrappers {
 			}
 
 			bool emit_user_event(Event event){
-				al_emit_user_event(data->event_source, event.data->event, nullptr);
+				return al_emit_user_event(data->event_source, event.data->event, nullptr);
 			}
 
 	};
