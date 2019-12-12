@@ -1,38 +1,36 @@
-#include <iostream>
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_image.h> 
 #include "./Bitmap/Bitmap.cpp"
 #include "./Color/Color.cpp"
-#include "./Display/Display.cpp"
+#include "./Display/Display.h"
 #include "./Events/EventQueue.cpp"
 #include "./Timer/Timer.cpp"
-#include <unistd.h>
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_image.h>
+#include <iostream>
 #include <string>
+#include <thread>
+#include <unistd.h>
 
 double framerate = 90.00;
+
+void create_display(std::string name) {
+	AllegroWrappers::Display test_display(160, 90);
+	for (int i = 0; i < 5; i++) {
+		test_display.set_window_title(name + " " + std::to_string(i + 1));
+		usleep(1000000);
+	}
+	usleep(1000000);
+}
 
 int main(int argc, char **argv) {
 	al_init();
 	al_init_image_addon();
 	ALLEGRO_PATH *path = al_get_standard_path(ALLEGRO_RESOURCES_PATH);
 	AllegroWrappers::Bitmap backbuffer(1080, 720);
-	
-	AllegroWrappers::Display test_display(1080, 720);
-	test_display.set_window_title("Test Window!");
-	AllegroWrappers::EventQueue queue;
-	AllegroWrappers::Timer timer(1.0/framerate);
-	AllegroWrappers::Bitmap image("test.png");
-	AllegroWrappers::EventSource source = timer.get_timer_event_source();
-	queue.register_event_source(source);
-	timer.start_timer();	
-	double time = al_get_time();
-	while(true){
-		queue.await_next_event();
-		test_display.get_backbuffer().draw_bitmap(image, 0, 0, 0);
-		test_display.flip_display();
-		std::cout << "Frame rate: " << 1.0/(al_get_time() - time) << "\n";
-		time = al_get_time();
-		
-	}
+	std::thread t1(create_display, "Main"), t2(create_display, "Secondary");
 
+	usleep(3000000);
+	t1.swap(t2);
+
+	t1.join();
+	t2.join();
 }
