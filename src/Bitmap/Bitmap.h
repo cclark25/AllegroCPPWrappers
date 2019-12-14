@@ -62,11 +62,11 @@ namespace AllegroWrappers {
 
 		int get_bitmap_x();
 		// Alias to get_bitmap_x()
-		int (Bitmap::*get_x_position_in_parent)() = get_bitmap_x;
+		int (Bitmap::*get_x_position_in_parent)() = &AllegroWrappers::Bitmap::get_bitmap_x;
 
 		int get_bitmap_y();
 		// Alias to get_bitmap_y()
-		int (Bitmap::*get_y_position_in_parent)() = get_bitmap_y;
+		int (Bitmap::*get_y_position_in_parent)() = &AllegroWrappers::Bitmap::get_bitmap_y;
 
 		void reparent_bitmap(Bitmap parent, int x, int y, int width,
 		                     int height);

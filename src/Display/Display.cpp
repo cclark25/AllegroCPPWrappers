@@ -1,5 +1,5 @@
 #include "Display.h"
-#include "../Bitmap/Bitmap.cpp"
+#include "../Bitmap/Bitmap.h"
 #include <allegro5/allegro.h>
 #include <set>
 #include <stdexcept>

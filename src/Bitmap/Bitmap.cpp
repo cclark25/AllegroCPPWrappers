@@ -2,6 +2,7 @@
 #include "../Color/Color.cpp"
 #include <allegro5/allegro.h>
 #include <string>
+#include <stdexcept>
 
 namespace AllegroWrappers {
 	Bitmap::Bitmap(ALLEGRO_BITMAP *base) {
@@ -16,6 +17,9 @@ namespace AllegroWrappers {
 	Bitmap::Bitmap(int width, int height) {
 		data = new foreign_data();
 		data->bitmap = al_create_bitmap(width, height);
+		if(data->bitmap == nullptr){
+			throw std::runtime_error("Could not create Bitmap with width = " + std::to_string(width) + " and height = " + std::to_string(height));
+		}
 		data->reference_count = 1;
 	}
 
@@ -28,6 +32,9 @@ namespace AllegroWrappers {
 	Bitmap::Bitmap(std::string file_path) {
 		data = new foreign_data();
 		data->bitmap = al_load_bitmap(file_path.c_str());
+		if(data->bitmap == nullptr){
+			throw std::runtime_error("Could not load file from path:\n\t" + file_path);
+		}
 		data->reference_count = 1;
 	}
 

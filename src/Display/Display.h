@@ -1,6 +1,6 @@
 #ifndef ALLEGRO_WRAPPERS_DISPLAY_DEF
 #define ALLEGRO_WRAPPERS_DISPLAY_DEF
-#include "../Bitmap/Bitmap.cpp"
+#include "../Bitmap/Bitmap.h"
 #include <allegro5/allegro.h>
 #include <set>
 #include <stdexcept>
