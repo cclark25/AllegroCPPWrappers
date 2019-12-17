@@ -2,6 +2,7 @@
 #define ALLEGRO_WRAPPERS_BITMAP_DEF
 
 #include "../Color/Color.cpp"
+#include "../Transformation/Transform.h"
 #include <allegro5/allegro.h>
 #include <string>
 
@@ -62,11 +63,13 @@ namespace AllegroWrappers {
 
 		int get_bitmap_x();
 		// Alias to get_bitmap_x()
-		int (Bitmap::*get_x_position_in_parent)() = &AllegroWrappers::Bitmap::get_bitmap_x;
+		int (Bitmap::*get_x_position_in_parent)() =
+		    &AllegroWrappers::Bitmap::get_bitmap_x;
 
 		int get_bitmap_y();
 		// Alias to get_bitmap_y()
-		int (Bitmap::*get_y_position_in_parent)() = &AllegroWrappers::Bitmap::get_bitmap_y;
+		int (Bitmap::*get_y_position_in_parent)() =
+		    &AllegroWrappers::Bitmap::get_bitmap_y;
 
 		void reparent_bitmap(Bitmap parent, int x, int y, int width,
 		                     int height);
@@ -172,6 +175,13 @@ namespace AllegroWrappers {
 		                               float destination_x, float destination_y,
 		                               float destination_w, float destination_h,
 		                               int flags);
+
+		// From Transformations
+		void use_transform(const Transform trans);
+		const Transform get_current_transform(void);
+		void use_projection_transform(const Transform transformation);
+		const Transform get_current_projection_transform(void);
+		const Transform get_current_inverse_transform(void);
 
 		// Destructor
 		~Bitmap();

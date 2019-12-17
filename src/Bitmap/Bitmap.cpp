@@ -1,12 +1,12 @@
 #include "./Bitmap.h"
 #include "../Color/Color.cpp"
 #include <allegro5/allegro.h>
-#include <string>
 #include <stdexcept>
+#include <string>
 
 namespace AllegroWrappers {
 	Bitmap::Bitmap(ALLEGRO_BITMAP *base) {
-		data = new foreign_data();
+		data = new foreign_data;
 		data->reference_count = 1;
 		data->bitmap = base;
 	}
@@ -17,8 +17,10 @@ namespace AllegroWrappers {
 	Bitmap::Bitmap(int width, int height) {
 		data = new foreign_data();
 		data->bitmap = al_create_bitmap(width, height);
-		if(data->bitmap == nullptr){
-			throw std::runtime_error("Could not create Bitmap with width = " + std::to_string(width) + " and height = " + std::to_string(height));
+		if (data->bitmap == nullptr) {
+			throw std::runtime_error("Could not create Bitmap with width = " +
+			                         std::to_string(width) +
+			                         " and height = " + std::to_string(height));
 		}
 		data->reference_count = 1;
 	}
@@ -32,8 +34,9 @@ namespace AllegroWrappers {
 	Bitmap::Bitmap(std::string file_path) {
 		data = new foreign_data();
 		data->bitmap = al_load_bitmap(file_path.c_str());
-		if(data->bitmap == nullptr){
-			throw std::runtime_error("Could not load file from path:\n\t" + file_path);
+		if (data->bitmap == nullptr) {
+			throw std::runtime_error("Could not load file from path:\n\t" +
+			                         file_path);
 		}
 		data->reference_count = 1;
 	}
@@ -50,9 +53,13 @@ namespace AllegroWrappers {
 
 	int Bitmap::get_bitmap_flags() { return al_get_bitmap_flags(data->bitmap); }
 
-	int Bitmap::get_bitmap_format() { return al_get_bitmap_format(data->bitmap); }
+	int Bitmap::get_bitmap_format() {
+		return al_get_bitmap_format(data->bitmap);
+	}
 
-	int Bitmap::get_bitmap_height() { return al_get_bitmap_height(data->bitmap); }
+	int Bitmap::get_bitmap_height() {
+		return al_get_bitmap_height(data->bitmap);
+	}
 
 	int Bitmap::get_bitmap_width() { return al_get_bitmap_width(data->bitmap); }
 
@@ -80,7 +87,8 @@ namespace AllegroWrappers {
 
 	int Bitmap::get_bitmap_y() { return al_get_bitmap_x(data->bitmap); }
 
-	void Bitmap::reparent_bitmap(Bitmap parent, int x, int y, int width, int height) {
+	void Bitmap::reparent_bitmap(Bitmap parent, int x, int y, int width,
+	                             int height) {
 		al_reparent_bitmap(data->bitmap, parent.data->bitmap, x, y, width,
 		                   height);
 		data->parent = &parent;
@@ -138,34 +146,36 @@ namespace AllegroWrappers {
 		al_clear_depth_buffer(z);
 	}
 
-	void Bitmap::draw_bitmap(Bitmap bitmap, float destination_x, float destination_y,
-	                 int flags) {
+	void Bitmap::draw_bitmap(Bitmap bitmap, float destination_x,
+	                         float destination_y, int flags) {
 		al_set_target_bitmap(this->data->bitmap);
 		al_draw_bitmap(bitmap.data->bitmap, destination_x, destination_y,
 		               flags);
 	}
 
-	void Bitmap::draw_tinted_bitmap(Bitmap bitmap, Color tint, float destination_x,
-	                        float destination_y, int flags) {
+	void Bitmap::draw_tinted_bitmap(Bitmap bitmap, Color tint,
+	                                float destination_x, float destination_y,
+	                                int flags) {
 		al_set_target_bitmap(this->data->bitmap);
 		al_draw_tinted_bitmap(bitmap.data->bitmap, tint, destination_x,
 		                      destination_y, flags);
 	}
 
-	void Bitmap::draw_bitmap_region(Bitmap bitmap, float source_x, float source_y,
-	                        float source_width, float source_height,
-	                        float destination_x, float destination_y,
-	                        int flags) {
+	void Bitmap::draw_bitmap_region(Bitmap bitmap, float source_x,
+	                                float source_y, float source_width,
+	                                float source_height, float destination_x,
+	                                float destination_y, int flags) {
 		al_set_target_bitmap(this->data->bitmap);
 		al_draw_bitmap_region(bitmap.data->bitmap, source_x, source_y,
 		                      source_width, source_height, destination_x,
 		                      destination_y, flags);
 	}
 
-	void Bitmap::draw_tinted_bitmap_region(Bitmap bitmap, Color tint, float source_x,
-	                               float source_y, float source_w,
-	                               float source_h, float destination_x,
-	                               float destination_y, int flags) {
+	void Bitmap::draw_tinted_bitmap_region(Bitmap bitmap, Color tint,
+	                                       float source_x, float source_y,
+	                                       float source_w, float source_h,
+	                                       float destination_x,
+	                                       float destination_y, int flags) {
 		al_set_target_bitmap(this->data->bitmap);
 		al_draw_tinted_bitmap_region(bitmap.data->bitmap, tint, source_x,
 		                             source_y, source_w, source_h,
@@ -176,19 +186,21 @@ namespace AllegroWrappers {
 	// implement this because it would be very innefficient. See also bitmap
 	// locks from the allegro documentation.
 
-	void Bitmap::draw_rotated_bitmap(Bitmap bitmap, float center_x, float center_y,
-	                         float destination_x, float destination_y,
-	                         float angle_radians, int flags) {
+	void Bitmap::draw_rotated_bitmap(Bitmap bitmap, float center_x,
+	                                 float center_y, float destination_x,
+	                                 float destination_y, float angle_radians,
+	                                 int flags) {
 		al_set_target_bitmap(this->data->bitmap);
 		al_draw_rotated_bitmap(bitmap.data->bitmap, center_x, center_y,
 		                       destination_x, destination_y, angle_radians,
 		                       flags);
 	}
 
-	void Bitmap::draw_tinted_rotated_bitmap(Bitmap bitmap, Color tint, float center_x,
-	                                float center_y, float destination_x,
-	                                float destination_y, float angle,
-	                                int flags) {
+	void Bitmap::draw_tinted_rotated_bitmap(Bitmap bitmap, Color tint,
+	                                        float center_x, float center_y,
+	                                        float destination_x,
+	                                        float destination_y, float angle,
+	                                        int flags) {
 		al_set_target_bitmap(this->data->bitmap);
 		al_draw_tinted_rotated_bitmap(bitmap.data->bitmap, tint, center_x,
 		                              center_y, destination_x, destination_y,
@@ -196,21 +208,20 @@ namespace AllegroWrappers {
 	}
 
 	void Bitmap::draw_scaled_rotated_bitmap(Bitmap bitmap, float center_x,
-	                                float center_y, float destination_x,
-	                                float destination_y, float xscale,
-	                                float yscale, float angle, int flags) {
+	                                        float center_y, float destination_x,
+	                                        float destination_y, float xscale,
+	                                        float yscale, float angle,
+	                                        int flags) {
 		al_set_target_bitmap(this->data->bitmap);
 		al_draw_scaled_rotated_bitmap(bitmap.data->bitmap, center_x, center_y,
 		                              destination_x, destination_y, xscale,
 		                              yscale, angle, flags);
 	}
 
-	void Bitmap::draw_tinted_scaled_rotated_bitmap(Bitmap bitmap, Color tint,
-	                                       float center_x, float center_y,
-	                                       float destination_x,
-	                                       float destination_y, float xscale,
-	                                       float yscale, float angle,
-	                                       int flags) {
+	void Bitmap::draw_tinted_scaled_rotated_bitmap(
+	    Bitmap bitmap, Color tint, float center_x, float center_y,
+	    float destination_x, float destination_y, float xscale, float yscale,
+	    float angle, int flags) {
 		al_set_target_bitmap(this->data->bitmap);
 		al_draw_tinted_scaled_rotated_bitmap(
 		    bitmap.data->bitmap, tint, center_x, center_y, destination_x,
@@ -229,11 +240,12 @@ namespace AllegroWrappers {
 		    angle, flags);
 	}
 
-	void Bitmap::draw_scaled_bitmap(Bitmap bitmap, float source_x, float source_y,
-	                        float source_width, float source_height,
-	                        float destination_x, float destination_y,
-	                        float destination_width, float destination_height,
-	                        int flags) {
+	void Bitmap::draw_scaled_bitmap(Bitmap bitmap, float source_x,
+	                                float source_y, float source_width,
+	                                float source_height, float destination_x,
+	                                float destination_y,
+	                                float destination_width,
+	                                float destination_height, int flags) {
 		al_set_target_bitmap(this->data->bitmap);
 		al_draw_scaled_bitmap(bitmap.data->bitmap, source_x, source_y,
 		                      source_width, source_height, destination_x,
@@ -241,15 +253,43 @@ namespace AllegroWrappers {
 		                      destination_height, flags);
 	}
 
-	void Bitmap::draw_tinted_scaled_bitmap(Bitmap bitmap, Color tint, float source_x,
-	                               float source_y, float source_w,
-	                               float source_h, float destination_x,
-	                               float destination_y, float destination_w,
-	                               float destination_h, int flags) {
+	void Bitmap::draw_tinted_scaled_bitmap(Bitmap bitmap, Color tint,
+	                                       float source_x, float source_y,
+	                                       float source_w, float source_h,
+	                                       float destination_x,
+	                                       float destination_y,
+	                                       float destination_w,
+	                                       float destination_h, int flags) {
 		al_set_target_bitmap(this->data->bitmap);
 		al_draw_tinted_scaled_bitmap(
 		    bitmap.data->bitmap, tint, source_x, source_y, source_w, source_h,
 		    destination_x, destination_y, destination_w, destination_h, flags);
+	}
+
+	void Bitmap::use_transform(const Transform transformation) {
+		al_set_target_bitmap(this->data->bitmap);
+		al_use_transform(transformation.data->transform);
+	}
+
+	const Transform Bitmap::get_current_transform(void) {
+		al_set_target_bitmap(this->data->bitmap);
+		return Transform((ALLEGRO_TRANSFORM *)al_get_current_transform());
+	}
+	void Bitmap::use_projection_transform(const Transform transformation) {
+		al_set_target_bitmap(this->data->bitmap);
+		al_use_projection_transform(transformation.data->transform);
+	}
+
+	const Transform Bitmap::get_current_projection_transform(void) {
+		al_set_target_bitmap(this->data->bitmap);
+		return Transform(
+		    (ALLEGRO_TRANSFORM *)al_get_current_projection_transform());
+	}
+
+	const Transform Bitmap::get_current_inverse_transform(){
+		al_set_target_bitmap(this->data->bitmap);
+		return Transform(
+		    (ALLEGRO_TRANSFORM *)al_get_current_inverse_transform());
 	}
 
 	// Destructor
