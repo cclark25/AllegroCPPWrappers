@@ -9,6 +9,8 @@ namespace AllegroWrappers {
 		data = new foreign_data;
 		data->reference_count = 1;
 		data->bitmap = base;
+		this->use_transform(data->transform);
+		this->use_projection_transform(data->projection);
 	}
 
 	// Constructors
@@ -23,6 +25,8 @@ namespace AllegroWrappers {
 			                         " and height = " + std::to_string(height));
 		}
 		data->reference_count = 1;
+		this->use_transform(data->transform);
+		this->use_projection_transform(data->projection);
 	}
 
 	// Creates a bitmap that is a reference to another bitmap.
@@ -39,6 +43,8 @@ namespace AllegroWrappers {
 			                         file_path);
 		}
 		data->reference_count = 1;
+		this->use_transform(data->transform);
+		this->use_projection_transform(data->projection);
 	}
 
 	// Object-Oriented wrapper for the al_clone_bitmap() function.
@@ -269,34 +275,35 @@ namespace AllegroWrappers {
 	void Bitmap::use_transform(const Transform transformation) {
 		al_set_target_bitmap(this->data->bitmap);
 		al_use_transform(transformation.data->transform);
+		this->data->transform = transformation;
 	}
 
 	const Transform Bitmap::get_current_transform(void) {
 		al_set_target_bitmap(this->data->bitmap);
-		return Transform((ALLEGRO_TRANSFORM *)al_get_current_transform());
+		return this->data->transform;
 	}
 	void Bitmap::use_projection_transform(const Transform transformation) {
 		al_set_target_bitmap(this->data->bitmap);
 		al_use_projection_transform(transformation.data->transform);
+		this->data->projection = transformation;
 	}
 
 	const Transform Bitmap::get_current_projection_transform(void) {
 		al_set_target_bitmap(this->data->bitmap);
-		return Transform(
-		    (ALLEGRO_TRANSFORM *)al_get_current_projection_transform());
+		return this->data->projection;
 	}
 
-	const Transform Bitmap::get_current_inverse_transform(){
-		al_set_target_bitmap(this->data->bitmap);
-		return Transform(
-		    (ALLEGRO_TRANSFORM *)al_get_current_inverse_transform());
-	}
+	// const Transform Bitmap::get_current_inverse_transform(){
+	// 	al_set_target_bitmap(this->data->bitmap);
+	// 	return this->data->transform.invert_transform();
+	// }
 
 	// Destructor
 	Bitmap::~Bitmap() {
 		data->reference_count--;
 		if (data->reference_count == 0) {
 			al_destroy_bitmap(data->bitmap);
+			delete data->parent;
 			delete data;
 		}
 	}

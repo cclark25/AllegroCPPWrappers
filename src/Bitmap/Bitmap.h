@@ -14,6 +14,7 @@ namespace AllegroWrappers {
 			ALLEGRO_BITMAP *bitmap;
 			unsigned int reference_count;
 			Bitmap *parent;
+			Transform transform, projection;
 		} *data = nullptr;
 
 		// Constructors
@@ -181,7 +182,7 @@ namespace AllegroWrappers {
 		const Transform get_current_transform(void);
 		void use_projection_transform(const Transform transformation);
 		const Transform get_current_projection_transform(void);
-		const Transform get_current_inverse_transform(void);
+		// const Transform get_current_inverse_transform(void);
 
 		// Destructor
 		~Bitmap();

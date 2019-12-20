@@ -1,27 +1,22 @@
-al_copy_transform
-al_use_transform
-al_get_current_transform
-al_use_projection_transform
-al_get_current_projection_transform
-al_get_current_inverse_transform
-al_invert_transform
-al_transpose_transform
-al_check_inverse
-al_identity_transform
-al_build_transform
-al_build_camera_transform
-al_translate_transform
-al_rotate_transform
-al_scale_transform
-al_transform_coordinates
-al_transform_coordinates_3d
-al_transform_coordinates_4d
-al_transform_coordinates_3d_projective
-al_compose_transform
-al_orthographic_transform
-al_perspective_transform
-al_translate_transform_3d
-al_scale_transform_3d
-al_rotate_transform_3d
-al_horizontal_shear_transform
-al_vertical_shear_transform
+Transform copy_transform();
+void invert_transform();
+void transpose_transform();
+bool check_inverse(float tolerance);
+void identity_transform();
+void build_transform(float xTranslation, float yTranslation, float xScale, float yScale, float rotation);
+void build_camera_transform(float position_x, float position_y, float position_z, float lookDir_x, float look_y, float look_z, float up_x, float up_y, float up_z);
+void translate_transform(float horizontal, float vertical);
+void rotate_transform(float angle);
+void scale_transform(float xScale, float yScale);
+Coordinates transform_coordinates(float x, float y);
+Coordinates3D transform_coordinates_3d(float x, float y, float z);
+Coordinates4D transform_coordinates_4d(float x, float y, float z, float w);
+Coordinates3D _transform_coordinates_3d_projective(float x, float y, float z);
+void compose_transform(Transform transformation);
+void orthographic_transform(float left, float top, float right, float bottom, float near, float far);
+void perspective_transform(float left, float top, float right, float bottom, float near, float far);
+void translate_transform_3d(float x, float y);
+void scale_transform_3d(float xScale, float yScale, float zScale);
+void rotate_transform_3d(float x, float y, float z, float angle);
+void horizontal_shear_transform(float rotation);
+void vertical_shear_transform(float rotation);

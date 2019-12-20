@@ -1,8 +1,8 @@
-#include "./Bitmap/Bitmap.cpp"
-#include "./Color/Color.cpp"
-#include "./Display/Display.h"
-#include "./Events/EventQueue.cpp"
-#include "./Timer/Timer.cpp"
+#include "./src/Bitmap/Bitmap.h"
+#include "./src/Color/Color.cpp"
+#include "./src/Display/Display.h"
+#include "./src/Events/EventQueue.cpp"
+#include "./src/Timer/Timer.cpp"
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <iostream>
@@ -24,13 +24,9 @@ void create_display(std::string name) {
 int main(int argc, char **argv) {
 	al_init();
 	al_init_image_addon();
-	ALLEGRO_PATH *path = al_get_standard_path(ALLEGRO_RESOURCES_PATH);
+	// ALLEGRO_PATH *path = al_get_standard_path(ALLEGRO_RESOURCES_PATH);
 	AllegroWrappers::Bitmap backbuffer(1080, 720);
-	std::thread t1(create_display, "Main"), t2(create_display, "Secondary");
+	// std::thread t1(create_display, "Main"), t2(create_display, "Secondary");
 
 	usleep(3000000);
-	t1.swap(t2);
-
-	t1.join();
-	t2.join();
 }

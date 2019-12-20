@@ -1,3 +1,5 @@
+#ifndef ALLEGRO_WRAPPERS_TRANSFORM_DEF
+#define ALLEGRO_WRAPPERS_TRANSFORM_DEF
 #include <allegro5/allegro.h>
 
 namespace AllegroWrappers {
@@ -11,7 +13,7 @@ namespace AllegroWrappers {
 	struct Coordinates4D : Coordinates3D {
 		float w;
 	};
-	
+
 	class Transform {
 	  protected:
 	  public:
@@ -21,11 +23,6 @@ namespace AllegroWrappers {
 		} *data = nullptr;
 
 		// Constructors
-
-		// Warning: This constructor is to wrap existing ALLEGRO_TRANSFORM
-		// objects in the class wrapper. It will not manage the memory that the
-		// original object was held in.
-		Transform(ALLEGRO_TRANSFORM *base);
 
 		Transform();
 
@@ -53,15 +50,50 @@ namespace AllegroWrappers {
 		// Use this Transform to transform to transform 3D coordinates.
 		Coordinates3D transform_coordinates_3d(float x, float y, float z);
 		// Use this Transform to transform to transform 4D coordinates.
-		Coordinates4D transform_coordinates_4d(float x, float y, float z, float w);
-		void al_transform_coordinates_3d_projective();
-		void al_compose_transform();
-		void al_orthographic_transform();
-		void al_perspective_transform();
-		void al_translate_transform_3d();
-		void al_scale_transform_3d();
-		void al_rotate_transform_3d();
-		void al_horizontal_shear_transform();
-		void al_vertical_shear_transform();
+		Coordinates4D transform_coordinates_4d(float x, float y, float z,
+		                                       float w);
+
+		Coordinates3D _transform_coordinates_3d_projective(float x, float y,
+		                                                   float z);
+		// Apply another transform to this one
+		void compose_transform(Transform transformation);
+
+		/*
+		    Combines the given transformation with an orthographic
+		   transformation which maps the screen rectangle to the given left/top
+		   and right/bottom coordinates. near/far is the z range, coordinates
+		   outside of that range will get clipped.
+		*/
+		void orthographic_transform(float left, float top, float right,
+		                            float bottom, float near, float far);
+
+		/*
+		    Like al_orthographic_transform but honors perspective. If everything
+		   is at a z-position of -near it will look the same as with an
+		   orthographic transformation.
+		*/
+		void perspective_transform(float left, float top, float right,
+		                           float bottom, float near, float far);
+		/*
+		    Combines the given transformation with a transformation which
+		    translates coordinates by the given vector.
+		*/
+		void translate_transform_3d(float x, float y);
+		/*
+		    Combines the given transformation with a transformation which scales
+		   coordinates by the given vector.
+		*/
+		void scale_transform_3d(float xScale, float yScale, float zScale);
+		/*
+		    Combines the given transformation with a transformation which
+		   rotates coordinates around the given vector by the given angle in
+		   radians. Note: The vector is assumed to be of unit length (otherwise
+		   it will also incur a scale).
+		*/
+		void rotate_transform_3d(float x, float y, float z, float angle);
+		void horizontal_shear_transform(float rotation);
+		void vertical_shear_transform(float rotation);
 	};
 } // namespace AllegroWrappers
+
+#endif
