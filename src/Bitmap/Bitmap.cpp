@@ -10,7 +10,7 @@ namespace AllegroWrappers {
 		data->reference_count = 1;
 		data->bitmap = base;
 		this->use_transform(data->transform);
-		this->use_projection_transform(data->projection);
+		// this->use_projection_transform(data->projection);
 	}
 
 	// Constructors
@@ -26,7 +26,7 @@ namespace AllegroWrappers {
 		}
 		data->reference_count = 1;
 		this->use_transform(data->transform);
-		this->use_projection_transform(data->projection);
+		// this->use_projection_transform(data->projection);
 	}
 
 	// Creates a bitmap that is a reference to another bitmap.
@@ -44,7 +44,7 @@ namespace AllegroWrappers {
 		}
 		data->reference_count = 1;
 		this->use_transform(data->transform);
-		this->use_projection_transform(data->projection);
+		// this->use_projection_transform(data->projection);
 	}
 
 	// Object-Oriented wrapper for the al_clone_bitmap() function.

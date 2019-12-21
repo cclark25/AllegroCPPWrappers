@@ -4,6 +4,7 @@ namespace AllegroWrappers {
 		this->data = new foreign_data();
 		this->data->reference_count = 1;
 		this->data->transform = new ALLEGRO_TRANSFORM();
+		this->identity_transform();
 	}
 
 	Transform::Transform(Transform &source) {
