@@ -3,6 +3,7 @@
 #include "./src/Display/Display.h"
 #include "./src/Events/EventQueue.cpp"
 #include "./src/Timer/Timer.cpp"
+#include "./src/Transformation/Transform.h"
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <iostream>
@@ -25,8 +26,16 @@ int main(int argc, char **argv) {
 	al_init();
 	al_init_image_addon();
 	// ALLEGRO_PATH *path = al_get_standard_path(ALLEGRO_RESOURCES_PATH);
-	AllegroWrappers::Bitmap backbuffer(1080, 720);
 	// std::thread t1(create_display, "Main"), t2(create_display, "Secondary");
-
-	usleep(3000000);
+	
+	AllegroWrappers::Coordinates3D coord(0,0,0);
+	for(int i = 0; i < 100000000; i++){
+		AllegroWrappers::Transform t;
+		t.identity_transform();
+		t.translate_transform(120, 156);
+		t.rotate_transform(3.14159 / 2.0);
+		coord = t.transform_coordinates_3d(coord.x, coord.y, coord.z);
+		//std::cout << "X: " << coord.x << "\tY: " << coord.y << "\tZ: " << coord.z << std::endl;
+	}
+	
 }

@@ -6,12 +6,17 @@ namespace AllegroWrappers {
 	struct Coordinates {
 		float x;
 		float y;
+		Coordinates(float xVal, float yVal) : x(xVal), y(yVal) {}
 	};
 	struct Coordinates3D : Coordinates {
 		float z;
+		Coordinates3D(float xVal, float yVal, float zVal)
+		    : z(zVal), Coordinates(xVal, yVal) {}
 	};
 	struct Coordinates4D : Coordinates3D {
 		float w;
+		Coordinates4D(float xVal, float yVal, float zVal, float wVal)
+		    : w(zVal), Coordinates3D(xVal, yVal, zVal) {}
 	};
 
 	class Transform {
@@ -30,20 +35,53 @@ namespace AllegroWrappers {
 
 		Transform copy_transform();
 
+		~Transform();
+
 		void invert_transform();
+		/*
+		    Transposes the matrix of the given transform. This can be used for
+		   inversing a rotation transform.
+		 */
 		void transpose_transform();
+		/*
+		    Checks if the transformation has an inverse using the supplied
+		    tolerance. Tolerance should be a small value between 0 and 1, with
+		   1e-7 being sufficient for most applications.
+		*/
 		bool check_inverse(float tolerance);
+		/*
+		    Sets the transformation to be the identity transformation. This is
+		   the default transformation. Use al_use_transform on an identity
+		   transformation to return to the default.
+		*/
 		void identity_transform();
+		/*
+		    Builds a transformation given some parameters. This call is
+		   equivalent to calling the transformations in this order: make
+		   identity, rotate, scale, translate. This method is faster, however,
+		   than actually calling those functions.
+		*/
 		void build_transform(float xTranslation, float yTranslation,
 		                     float xScale, float yScale, float rotation);
-		// Places camera at "position", looks toward direction of point "lool",
-		// and orients itself using "up" to detemine which way should be up.
+		/*
+		    Places camera at "position", looks toward direction of point "look",
+		   and orients itself using "up" to detemine which way should be up.
+		*/
 		void build_camera_transform(float position_x, float position_y,
 		                            float position_z, float lookDir_x,
 		                            float look_y, float look_z, float up_x,
 		                            float up_y, float up_z);
+		/*
+		    Apply a translation to a transformation.
+		*/
 		void translate_transform(float horizontal, float vertical);
+		/*
+		    Apply a rotation to a transformation.
+		*/
 		void rotate_transform(float angle);
+		/*
+		    Apply a scale to a transformation.
+		*/
 		void scale_transform(float xScale, float yScale);
 		// Use this Transform to transform to transform 2D coordinates.
 		Coordinates transform_coordinates(float x, float y);
@@ -53,6 +91,11 @@ namespace AllegroWrappers {
 		Coordinates4D transform_coordinates_4d(float x, float y, float z,
 		                                       float w);
 
+		/*
+		    Transform x, y, z as homogeneous coordinates. This is the same as
+		   using al_transform_coordinates_4d with the w coordinate set to 1,
+		   then dividing x, y, z by the resulting w.
+		*/
 		Coordinates3D _transform_coordinates_3d_projective(float x, float y,
 		                                                   float z);
 		// Apply another transform to this one
@@ -78,7 +121,7 @@ namespace AllegroWrappers {
 		    Combines the given transformation with a transformation which
 		    translates coordinates by the given vector.
 		*/
-		void translate_transform_3d(float x, float y);
+		void translate_transform_3d(float x, float y, float z);
 		/*
 		    Combines the given transformation with a transformation which scales
 		   coordinates by the given vector.
@@ -91,7 +134,13 @@ namespace AllegroWrappers {
 		   it will also incur a scale).
 		*/
 		void rotate_transform_3d(float x, float y, float z, float angle);
+		/*
+		    Apply a horizontal shear to the transform.
+		*/
 		void horizontal_shear_transform(float rotation);
+		/*
+		    Apply a vertical shear to the transform.
+		*/
 		void vertical_shear_transform(float rotation);
 	};
 } // namespace AllegroWrappers

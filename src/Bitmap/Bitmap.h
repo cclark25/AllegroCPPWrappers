@@ -2,7 +2,7 @@
 #define ALLEGRO_WRAPPERS_BITMAP_DEF
 
 #include "../Color/Color.cpp"
-#include "../Transformation/Transform.h"
+#include "../Transform/Transform.h"
 #include <allegro5/allegro.h>
 #include <string>
 
