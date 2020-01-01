@@ -14,7 +14,6 @@ namespace AllegroWrappers {
 		std::set<std::thread::id>::iterator it = Display::thread_list.end();
 		it = Display::thread_list.find(std::this_thread::get_id());
 		bool result = it != Display::thread_list.end();
-		std::cout << "Here: " << result << std::endl;
 		return result;
 	}
 
