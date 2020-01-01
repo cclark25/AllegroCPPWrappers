@@ -1,23 +1,10 @@
 #ifndef ALLEGRO_WRAPPERS_TRANSFORM_DEF
 #define ALLEGRO_WRAPPERS_TRANSFORM_DEF
 #include <allegro5/allegro.h>
+#include "../Coordinates/Coordinates.h"
 
 namespace AllegroWrappers {
-	struct Coordinates {
-		float x;
-		float y;
-		Coordinates(float xVal, float yVal) : x(xVal), y(yVal) {}
-	};
-	struct Coordinates3D : Coordinates {
-		float z;
-		Coordinates3D(float xVal, float yVal, float zVal)
-		    : z(zVal), Coordinates(xVal, yVal) {}
-	};
-	struct Coordinates4D : Coordinates3D {
-		float w;
-		Coordinates4D(float xVal, float yVal, float zVal, float wVal)
-		    : w(zVal), Coordinates3D(xVal, yVal, zVal) {}
-	};
+	
 
 	class Transform {
 	  protected:
@@ -31,7 +18,7 @@ namespace AllegroWrappers {
 
 		Transform();
 
-		Transform(Transform &source);
+		Transform(const Transform &source);
 
 		Transform copy_transform();
 

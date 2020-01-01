@@ -8,6 +8,10 @@
 #include <thread>
 
 namespace AllegroWrappers {
+	struct constraints {
+		int min_width, min_height, max_width, max_height;
+	};
+	
 	class Display {
 	  private:
 		static std::set<std::thread::id> thread_list;
@@ -21,7 +25,7 @@ namespace AllegroWrappers {
 		struct foreign_data {
 			ALLEGRO_DISPLAY *display;
 			unsigned int reference_count;
-		} *data;
+		} * data;
 
 		// Constructors
 
@@ -47,12 +51,12 @@ namespace AllegroWrappers {
 
 		int get_height();
 
-		auto get_window_position();
+		Coordinates get_window_position();
 
 		void set_window_position(int x, int y);
 
-		auto get_window_constraints(int *min_width, int *min_h, int *max_w,
-		                            int *max_h);
+		constraints get_window_constraints(int *min_width, int *min_h,
+		                                   int *max_w, int *max_h);
 
 		bool set_window_constraints(int min_width, int min_height,
 		                            int max_width, int max_height);

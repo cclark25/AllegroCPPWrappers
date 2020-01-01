@@ -7,7 +7,7 @@ namespace AllegroWrappers {
 		this->identity_transform();
 	}
 
-	Transform::Transform(Transform &source) {
+	Transform::Transform(const Transform &source) {
 		this->data = source.data;
 		this->data->reference_count++;
 	}

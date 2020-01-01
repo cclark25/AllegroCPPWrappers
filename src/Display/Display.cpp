@@ -66,12 +66,12 @@ namespace AllegroWrappers {
 
 	int Display::get_height() { return al_get_display_height(data->display); }
 
-	auto Display::get_window_position() {
-		struct position {
-			int x;
-			int y;
-		} pos;
-		al_get_window_position(data->display, &pos.x, &pos.y);
+	Coordinates Display::get_window_position() {
+		Coordinates pos(0,0);
+		int x,y;
+		pos.x = x;
+		pos.y = y;
+		al_get_window_position(data->display, &x, &y);
 		return pos;
 	}
 
@@ -79,11 +79,9 @@ namespace AllegroWrappers {
 		al_set_window_position(data->display, x, y);
 	}
 
-	auto Display::get_window_constraints(int *min_width, int *min_h, int *max_w,
+	constraints Display::get_window_constraints(int *min_width, int *min_h, int *max_w,
 	                                     int *max_h) {
-		struct constraints {
-			int min_width, min_height, max_width, max_height;
-		} result;
+		constraints result;
 		al_get_window_constraints(data->display, &result.min_width,
 		                          &result.min_height, &result.max_width,
 		                          &result.max_height);
