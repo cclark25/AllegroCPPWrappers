@@ -1,6 +1,8 @@
 #include "./Bitmap.h"
 #include "../Color/Color.cpp"
 #include <allegro5/allegro.h>
+#include <cmath>
+#include <iostream>
 #include <stdexcept>
 #include <string>
 
@@ -152,11 +154,45 @@ namespace AllegroWrappers {
 		al_clear_depth_buffer(z);
 	}
 
+	bool Bitmap::shouldDraw(Bitmap bitmap, float destination_x,
+	                        float destination_y) {
+
+		Transform t = this->get_current_transform();
+		Coordinates topLeft = t.transform_coordinates(0, 0);
+		Coordinates topRight =
+		    t.transform_coordinates(bitmap.get_bitmap_width(), 0);
+		Coordinates bottomLeft =
+		    t.transform_coordinates(0, bitmap.get_bitmap_height());
+		Coordinates bottomRight = t.transform_coordinates(
+		    bitmap.get_bitmap_width(), bitmap.get_bitmap_height());
+
+		float leftmost = std::min(std::min(topLeft.x, topRight.x),
+		                          std::min(bottomLeft.x, bottomRight.x));
+		float rightmost = std::max(std::max(topLeft.x, topRight.x),
+		                           std::max(bottomLeft.x, bottomRight.x));
+		float topmost = std::min(std::min(topLeft.y, topRight.y),
+		                            std::min(bottomLeft.y, bottomRight.y));
+		float bottommost = std::max(std::max(topLeft.y, topRight.y),
+		                         std::max(bottomLeft.y, bottomRight.y));
+
+		bool shouldDraw =
+		    (destination_x + leftmost) <= this->get_bitmap_width();
+		shouldDraw = shouldDraw &&
+		             (destination_y + topmost) <= this->get_bitmap_height();
+		shouldDraw = shouldDraw &&
+		             (destination_x + rightmost) > 0;
+		shouldDraw = shouldDraw &&
+		             (destination_y + bottommost) > 0;
+		return shouldDraw;
+	}
+
 	void Bitmap::draw_bitmap(Bitmap bitmap, float destination_x,
 	                         float destination_y, int flags) {
-		al_set_target_bitmap(this->data->bitmap);
-		al_draw_bitmap(bitmap.data->bitmap, destination_x, destination_y,
-		               flags);
+		if (this->shouldDraw(bitmap, destination_x, destination_y)) {
+			al_set_target_bitmap(this->data->bitmap);
+			al_draw_bitmap(bitmap.data->bitmap, destination_x, destination_y,
+			               flags);
+		}
 	}
 
 	void Bitmap::draw_tinted_bitmap(Bitmap bitmap, Color tint,

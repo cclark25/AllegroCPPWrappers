@@ -115,6 +115,9 @@ namespace AllegroWrappers {
 
 		void al_clear_depth_buffer(float z);
 
+		bool shouldDraw(Bitmap bitmap, float destination_x,
+	                         float destination_y);
+
 		void draw_bitmap(Bitmap bitmap, float destination_x,
 		                 float destination_y, int flags);
 
